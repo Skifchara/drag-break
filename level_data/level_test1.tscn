@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://d06pega3ufpfi"]
+
+[ext_resource type="PackedScene" uid="uid://br7l5ufnve2wb" path="res://balls_data/ball_basic.tscn" id="1_8l5bw"]
+[ext_resource type="PackedScene" uid="uid://dn2eklr5bvqxr" path="res://item_data/shoot_start_area.tscn" id="2_3i3q6"]
+[ext_resource type="PackedScene" uid="uid://bo4i6ylu02dor" path="res://item_data/block_basic.tscn" id="3_1a2j4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yl2qk"]
+size = Vector2(1080, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_daqnw"]
+size = Vector2(32, 1920)
+
+[node name="LevelTest1" type="Node2D" unique_id=1060717199]
+
+[node name="WallTop" type="StaticBody2D" parent="." unique_id=528339300]
+position = Vector2(540, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=1191581805]
+shape = SubResource("RectangleShape2D_yl2qk")
+
+[node name="WallBottom" type="StaticBody2D" parent="." unique_id=375432204]
+position = Vector2(540, 1936)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=411824426]
+shape = SubResource("RectangleShape2D_yl2qk")
+
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=662136975]
+position = Vector2(-16, 960)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=199927744]
+shape = SubResource("RectangleShape2D_daqnw")
+
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=1547713271]
+position = Vector2(1096, 960)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=1961711219]
+shape = SubResource("RectangleShape2D_daqnw")
+
+[node name="ShootStartArea" parent="." unique_id=1573486763 instance=ExtResource("2_3i3q6")]
+position = Vector2(540, 1600)
+
+[node name="Ball" parent="." unique_id=293909605 instance=ExtResource("1_8l5bw")]
+position = Vector2(540, 1600)
+launch_power = 2500.0
+slow_mo_scale = 0.03
+correction_power = 2000.0
+slow_mo_cooldown = 0.8
+preview_line_width = 10.0
+preview_max_steps = 9
+preview_time_limit = 0.69
+flight_gravity = 1.12
+
+[node name="Blocks" type="Node2D" parent="." unique_id=495659775]
+
+[node name="Block_0_0" parent="Blocks" unique_id=281938654 instance=ExtResource("3_1a2j4")]
+position = Vector2(120, 200)
+
+[node name="Block_0_1" parent="Blocks" unique_id=1285220705 instance=ExtResource("3_1a2j4")]
+position = Vector2(360, 200)
+
+[node name="Block_0_2" parent="Blocks" unique_id=1458390307 instance=ExtResource("3_1a2j4")]
+position = Vector2(600, 200)
+
+[node name="Block_0_3" parent="Blocks" unique_id=1180546457 instance=ExtResource("3_1a2j4")]
+position = Vector2(840, 200)
+
+[node name="Block_1_0" parent="Blocks" unique_id=189260462 instance=ExtResource("3_1a2j4")]
+position = Vector2(484, 409)
+hit_points = 2
+
+[node name="Block_1_1" parent="Blocks" unique_id=470370218 instance=ExtResource("3_1a2j4")]
+position = Vector2(724, 409)
+hit_points = 2
+
+[node name="Block_1_2" parent="Blocks" unique_id=1287387649 instance=ExtResource("3_1a2j4")]
+position = Vector2(964, 409)
+hit_points = 2
+
+[node name="Block_2_0" parent="Blocks" unique_id=1004635603 instance=ExtResource("3_1a2j4")]
+position = Vector2(83, 691)
+
+[node name="Block_2_1" parent="Blocks" unique_id=1153479255 instance=ExtResource("3_1a2j4")]
+position = Vector2(323, 691)
+
+[node name="Block_2_2" parent="Blocks" unique_id=1369076077 instance=ExtResource("3_1a2j4")]
+position = Vector2(563, 691)
+
+[node name="Block_2_3" parent="Blocks" unique_id=1687202551 instance=ExtResource("3_1a2j4")]
+position = Vector2(803, 691)
+
+[node name="Block_3_0" parent="Blocks" unique_id=945164201 instance=ExtResource("3_1a2j4")]
+position = Vector2(479, 988)
+
+[node name="Block_3_1" parent="Blocks" unique_id=1906607170 instance=ExtResource("3_1a2j4")]
+position = Vector2(719, 988)
+
+[node name="Block_3_2" parent="Blocks" unique_id=1725276866 instance=ExtResource("3_1a2j4")]
+position = Vector2(959, 988)

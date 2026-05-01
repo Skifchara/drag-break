@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bo4i6ylu02dor"]
+
+[ext_resource type="Script" uid="uid://bgmhl18mkfu2x" path="res://scr/item_scr/block_basic.gd" id="1_67njj"]
+[ext_resource type="Texture2D" uid="uid://c4pq6m7nejc1" path="res://sprites/block_basic.png" id="2_2rv7y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0avds"]
+size = Vector2(240, 44)
+
+[node name="BlockBasic" type="StaticBody2D"]
+script = ExtResource("1_67njj")
+bounce = 0.5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(-0.12, 0.02)
+texture = ExtResource("2_2rv7y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_0avds")
