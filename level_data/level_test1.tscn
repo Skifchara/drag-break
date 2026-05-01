@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://br7l5ufnve2wb" path="res://balls_data/ball_basic.tscn" id="1_8l5bw"]
 [ext_resource type="PackedScene" uid="uid://dn2eklr5bvqxr" path="res://item_data/shoot_start_area.tscn" id="2_3i3q6"]
 [ext_resource type="PackedScene" uid="uid://bo4i6ylu02dor" path="res://item_data/block_basic.tscn" id="3_1a2j4"]
+[ext_resource type="PackedScene" uid="uid://xav8wv34djqc" path="res://item_data/block_jumppad.tscn" id="4_en6v0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yl2qk"]
 size = Vector2(1080, 32)
@@ -41,14 +42,16 @@ position = Vector2(540, 1600)
 
 [node name="Ball" parent="." unique_id=293909605 instance=ExtResource("1_8l5bw")]
 position = Vector2(540, 1600)
+scale = Vector2(0.5927294, 0.5746037)
 launch_power = 2500.0
 slow_mo_scale = 0.03
 correction_power = 2000.0
 slow_mo_cooldown = 0.8
-preview_line_width = 10.0
-preview_max_steps = 9
+preview_line_width = 0.0
+preview_dot_radius = 15.0
+preview_max_steps = 7
 preview_time_limit = 0.69
-flight_gravity = 1.12
+flight_gravity = 1.9849999999999999
 
 [node name="Blocks" type="Node2D" parent="." unique_id=495659775]
 
@@ -96,3 +99,6 @@ position = Vector2(719, 988)
 
 [node name="Block_3_2" parent="Blocks" unique_id=1725276866 instance=ExtResource("3_1a2j4")]
 position = Vector2(959, 988)
+
+[node name="Blockjumppad" parent="." unique_id=98419422 instance=ExtResource("4_en6v0")]
+position = Vector2(412, 950.00006)

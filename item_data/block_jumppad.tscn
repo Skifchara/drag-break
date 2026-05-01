@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://xav8wv34djqc"]
+
+[ext_resource type="Script" uid="uid://c8ja28qu7e6gb" path="res://scr/item_scr/block_jumppad.gd" id="1_0rjfb"]
+[ext_resource type="Texture2D" uid="uid://bts4inicrrreh" path="res://sprites/block_jumppad.png" id="2_we5fc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0avds"]
+size = Vector2(232, 38)
+
+[node name="Blockjumppad" type="StaticBody2D"]
+scale = Vector2(0.3508772, 0.45473683)
+script = ExtResource("1_0rjfb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(-0.12, 0.02)
+texture = ExtResource("2_we5fc")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_0avds")

@@ -54,6 +54,20 @@ enum State { IDLE, AIMING, FLYING, SLOWMO }
 ## Радиус, в котором клик считается "по мячу" для запуска
 @export var grab_radius: float = 200.0
 
+@export_group("Ball Scale & Physics")
+## Масштаб шарика (визуал + коллизия + кольцо)
+@export var ball_scale: float = 1.0:
+	set(v):
+		ball_scale = v
+		if is_inside_tree():
+			_apply_ball_scale()
+## Прыгучесть шарика (bounce)
+@export var ball_bounce: float = 0.8:
+	set(v):
+		ball_bounce = v
+		if is_inside_tree():
+			_apply_bounce()
+
 @export_group("Ring Indicator")
 ## Минимальный масштаб кольца при сильном натяжении
 @export var ring_min_scale: float = 0.3
@@ -80,6 +94,13 @@ var _gravity_2d: float = 980.0
 @onready var _ring_anim: AnimationPlayer = $RingContainer/AnimationPlayer
 var _ring_pull_idle_running: bool = false
 var _ring_wobble_started: bool = false
+var _virtual_drag: bool = false
+var _base_collision_radius: float = 48.0
+var _base_ring_radius: float = 56.0
+
+# ── Scale helpers ────────────────────────────────
+@onready var _ball_sprite: Sprite2D = $Sprite2D
+@onready var _ball_collision: CollisionShape2D = $CollisionShape2D
 
 
 func _ready():
@@ -89,6 +110,8 @@ func _ready():
 	_initial_pos = global_position
 	body_entered.connect(_on_body_entered)
 	_gravity_2d = ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)
+	_apply_bounce()
+	_apply_ball_scale()
 
 
 func _input(event: InputEvent):
@@ -127,14 +150,21 @@ func _handle_idle_aim_input(event: InputEvent):
 func _handle_flying_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed and _slow_mo_cooldown_timer <= 0.0:
+			var mouse_pos := get_global_mouse_position()
+			_virtual_drag = not _is_near_ball(mouse_pos)
 			_state = State.SLOWMO
 			Engine.time_scale = slow_mo_scale
-			_drag_start = global_position
-			_drag_current = get_global_mouse_position()
+			if _virtual_drag:
+				_drag_start = mouse_pos           # виртуальная точка привязки
+			else:
+				_drag_start = global_position      # захват за мяч
+			_drag_current = mouse_pos
 			_dragging = true
+			_ring_wobble_started = false
+			_ring_container.scale = Vector2(1, 1)
+			_ring_indicator.modulate = Color(0, 1, 0.3, 0.9)
 			_update_trajectory()
 			_simulate_current()
-			_ring_show_available()
 			queue_redraw()
 		elif event.pressed and _slow_mo_cooldown_timer > 0.0:
 			_ring_deny()
@@ -167,6 +197,32 @@ func _gravity() -> float:
 	return _gravity_2d * flight_gravity
 
 
+# ── Ball scale & bounce ─────────────────────────
+
+func _apply_ball_scale():
+	# Масштаб спрайта
+	if _ball_sprite:
+		_ball_sprite.scale = Vector2(0.05 * ball_scale, 0.05 * ball_scale)
+	# Масштаб коллизии
+	if _ball_collision and _ball_collision.shape is CircleShape2D:
+		_ball_collision.shape.radius = _base_collision_radius * ball_scale
+	# Масштаб кольца
+	if _ring_indicator:
+		_ring_indicator.call("set_radius", _base_ring_radius * ball_scale)
+	# Масштаб контейнера кольца сбрасываем (анимации работают относительно него)
+	if _ring_container:
+		_ring_container.scale = Vector2(1, 1)
+
+
+func _apply_bounce():
+	if physics_material_override:
+		physics_material_override.bounce = ball_bounce
+	else:
+		var mat := PhysicsMaterial.new()
+		mat.bounce = ball_bounce
+		physics_material_override = mat
+
+
 # ── Ring Indicator Control ──────────────────────
 
 func _ring_show_available():
@@ -197,6 +253,7 @@ func _ring_release():
 	_ring_anim.stop()
 	_ring_indicator.rotation = 0.0
 	_ring_container.scale = Vector2(1, 1)
+	_ring_wobble_started = false
 	_ring_anim.play("release")
 
 
@@ -323,6 +380,7 @@ func _reset_to_idle():
 	global_position = _initial_pos
 	_slow_mo_cooldown_timer = 0.0
 	_dragging = false
+	_virtual_drag = false
 	_clear_previews()
 	_ring_hide()
 	queue_redraw()

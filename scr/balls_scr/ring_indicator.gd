@@ -7,3 +7,8 @@ extends Node2D
 
 func _draw():
 	draw_arc(Vector2.ZERO, ring_radius, 0, TAU, segments, Color.WHITE, ring_thickness, true)
+
+
+func set_radius(r: float):
+	ring_radius = r
+	queue_redraw()
