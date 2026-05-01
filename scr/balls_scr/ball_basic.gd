@@ -44,9 +44,8 @@ enum State { IDLE, AIMING, FLYING, SLOWMO }
 @export_group("Proximity")
 @export var grab_radius: float = 200.0
 
-@export_group("Lives")
+@export_group("Lives & Corrections")
 @export var lives_per_death: int = 1
-@export var score_per_block: int = 10
 
 @export_group("Ball Scale & Physics")
 @export var ball_scale: float = 1.0:
@@ -141,8 +140,9 @@ func _handle_idle_aim_input(event: InputEvent):
 
 func _handle_flying_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed and _slow_mo_cooldown_timer <= 0.0:
+		if event.pressed and _slow_mo_cooldown_timer <= 0.0 and GameManager.corrections_remaining > 0:
 			var mouse_pos := get_global_mouse_position()
+			GameManager.use_correction()
 			_virtual_drag = not _is_near_ball(mouse_pos)
 			_state = State.SLOWMO
 			Engine.time_scale = slow_mo_scale
@@ -158,7 +158,7 @@ func _handle_flying_input(event: InputEvent):
 			_update_trajectory()
 			_simulate_current()
 			queue_redraw()
-		elif event.pressed and _slow_mo_cooldown_timer > 0.0:
+		elif event.pressed and (_slow_mo_cooldown_timer > 0.0 or GameManager.corrections_remaining <= 0):
 			_ring_deny()
 
 
@@ -352,6 +352,7 @@ func _launch():
 	linear_velocity = dir * (force_ratio * launch_power)
 	_slow_mo_cooldown_timer = 0.0
 	_clear_previews()
+	GameManager.refill_corrections()
 	_ring_show_available()
 	queue_redraw()
 
@@ -416,7 +417,6 @@ func _on_body_entered(body: Node):
 		var block = body as StaticBody2D
 		if block and block.has_method("hit"):
 			block.hit()
-			GameManager.add_score(score_per_block)
 
 
 func _on_hit_spike(damage: int = 1):

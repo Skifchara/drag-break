@@ -4,8 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dn2eklr5bvqxr" path="res://item_data/shoot_start_area.tscn" id="2_3i3q6"]
 [ext_resource type="PackedScene" uid="uid://bo4i6ylu02dor" path="res://item_data/block_basic.tscn" id="3_1a2j4"]
 [ext_resource type="PackedScene" uid="uid://xav8wv34djqc" path="res://item_data/block_jumppad.tscn" id="4_en6v0"]
-[ext_resource type="PackedScene" uid="uid://cy2bhiqggvw2w" path="res://item_data/block_spike.tscn" id="6_3qp52"]
+[ext_resource type="PackedScene" uid="uid://cy2bhiqggvw2w" path="res://item_data/block_spike.tscn" id="5_i7v8c"]
 [ext_resource type="PackedScene" uid="uid://b5t57at2tkiky" path="res://ui_folder/GameplayUI.tscn" id="6_jm3y7"]
+[ext_resource type="Script" uid="uid://b6thgikk6f2uy" path="res://scr/level_config.gd" id="7_4g1m6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yl2qk"]
 size = Vector2(1080, 32)
@@ -13,106 +14,101 @@ size = Vector2(1080, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_daqnw"]
 size = Vector2(32, 1920)
 
-[node name="LevelTest1" type="Node2D" unique_id=2055170783]
+[node name="LevelTest1" type="Node2D" unique_id=2117070036]
 
-[node name="WallTop" type="StaticBody2D" parent="." unique_id=35808295]
+[node name="WallTop" type="StaticBody2D" parent="." unique_id=1482859291]
 position = Vector2(540, -16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=994068144]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop" unique_id=1278498234]
 shape = SubResource("RectangleShape2D_yl2qk")
 
-[node name="WallBottom" type="StaticBody2D" parent="." unique_id=1644574940]
+[node name="WallBottom" type="StaticBody2D" parent="." unique_id=1561082988]
 position = Vector2(540, 1936)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=852176754]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom" unique_id=846424898]
 shape = SubResource("RectangleShape2D_yl2qk")
 
-[node name="WallLeft" type="StaticBody2D" parent="." unique_id=2105785552]
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=2096666178]
 position = Vector2(-16, 960)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1528300467]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1458820974]
 shape = SubResource("RectangleShape2D_daqnw")
 
-[node name="WallRight" type="StaticBody2D" parent="." unique_id=1521754199]
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=1801280718]
 position = Vector2(1096, 960)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=169568297]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=1340437651]
 shape = SubResource("RectangleShape2D_daqnw")
 
-[node name="GameplayUI" parent="." unique_id=26747587 instance=ExtResource("6_jm3y7")]
+[node name="GameplayUI" parent="." unique_id=1675524219 instance=ExtResource("6_jm3y7")]
 
-[node name="ShootStartArea" parent="." unique_id=27385822 instance=ExtResource("2_3i3q6")]
+[node name="LevelConfig" type="Node" parent="." unique_id=640889579]
+script = ExtResource("7_4g1m6")
+
+[node name="ShootStartArea" parent="." unique_id=1870936907 instance=ExtResource("2_3i3q6")]
+visible = false
 position = Vector2(540, 1600)
 
-[node name="Ball" parent="." unique_id=594176367 instance=ExtResource("1_8l5bw")]
+[node name="Ball" parent="." unique_id=696044257 instance=ExtResource("1_8l5bw")]
 position = Vector2(540, 1600)
 
-[node name="Blocks" type="Node2D" parent="." unique_id=1372167584]
+[node name="Blocks" type="Node2D" parent="." unique_id=802203900]
 
-[node name="Block_0_0" parent="Blocks" unique_id=444096598 instance=ExtResource("3_1a2j4")]
+[node name="Block_0_0" parent="Blocks" unique_id=1445615757 instance=ExtResource("3_1a2j4")]
 position = Vector2(120, 200)
 
-[node name="Block_0_1" parent="Blocks" unique_id=30135213 instance=ExtResource("3_1a2j4")]
+[node name="Block_0_1" parent="Blocks" unique_id=2113453723 instance=ExtResource("3_1a2j4")]
 position = Vector2(360, 200)
 
-[node name="Block_0_2" parent="Blocks" unique_id=693976126 instance=ExtResource("3_1a2j4")]
+[node name="Block_0_2" parent="Blocks" unique_id=1936338574 instance=ExtResource("3_1a2j4")]
 position = Vector2(600, 200)
 
-[node name="Block_0_3" parent="Blocks" unique_id=1356469060 instance=ExtResource("3_1a2j4")]
+[node name="Block_0_3" parent="Blocks" unique_id=1454291450 instance=ExtResource("3_1a2j4")]
 position = Vector2(840, 200)
 
-[node name="Block_1_0" parent="Blocks" unique_id=266801510 instance=ExtResource("3_1a2j4")]
+[node name="Block_1_0" parent="Blocks" unique_id=399911824 instance=ExtResource("3_1a2j4")]
 position = Vector2(484, 409)
 hit_points = 2
 
-[node name="Block_1_1" parent="Blocks" unique_id=374502546 instance=ExtResource("3_1a2j4")]
+[node name="Block_1_1" parent="Blocks" unique_id=1896189987 instance=ExtResource("3_1a2j4")]
 position = Vector2(724, 409)
 hit_points = 2
 
-[node name="Block_1_2" parent="Blocks" unique_id=698281704 instance=ExtResource("3_1a2j4")]
+[node name="Block_1_2" parent="Blocks" unique_id=381381495 instance=ExtResource("3_1a2j4")]
 position = Vector2(964, 409)
 hit_points = 2
 
-[node name="Block_2_0" parent="Blocks" unique_id=1623347756 instance=ExtResource("3_1a2j4")]
+[node name="Block_2_0" parent="Blocks" unique_id=7323351 instance=ExtResource("3_1a2j4")]
 position = Vector2(83, 691)
 
-[node name="Block_2_1" parent="Blocks" unique_id=1392561298 instance=ExtResource("3_1a2j4")]
+[node name="Block_2_1" parent="Blocks" unique_id=296242400 instance=ExtResource("3_1a2j4")]
 position = Vector2(323, 691)
 
-[node name="Block_2_2" parent="Blocks" unique_id=5214525 instance=ExtResource("3_1a2j4")]
+[node name="Block_2_2" parent="Blocks" unique_id=1877960579 instance=ExtResource("3_1a2j4")]
 position = Vector2(563, 691)
 
-[node name="Block_2_3" parent="Blocks" unique_id=2050608618 instance=ExtResource("3_1a2j4")]
+[node name="Block_2_3" parent="Blocks" unique_id=1234971016 instance=ExtResource("3_1a2j4")]
 position = Vector2(803, 691)
 
-[node name="Block_3_0" parent="Blocks" unique_id=1549084882 instance=ExtResource("3_1a2j4")]
+[node name="Block_3_0" parent="Blocks" unique_id=1893916065 instance=ExtResource("3_1a2j4")]
 position = Vector2(479, 988)
 
-[node name="Block_3_1" parent="Blocks" unique_id=202910921 instance=ExtResource("3_1a2j4")]
+[node name="Block_3_1" parent="Blocks" unique_id=368647697 instance=ExtResource("3_1a2j4")]
 position = Vector2(719, 988)
 
-[node name="Block_3_2" parent="Blocks" unique_id=1910450404 instance=ExtResource("3_1a2j4")]
+[node name="Block_3_2" parent="Blocks" unique_id=66418339 instance=ExtResource("3_1a2j4")]
 position = Vector2(959, 988)
 
-[node name="Blockjumppad" parent="." unique_id=1033457924 instance=ExtResource("4_en6v0")]
-position = Vector2(412, 950)
+[node name="Blockjumppad" parent="." unique_id=519187942 instance=ExtResource("4_en6v0")]
+position = Vector2(415.00003, 960.00006)
 
-[node name="Spikes" type="Node2D" parent="." unique_id=309367392]
+[node name="Spikes" type="Node2D" parent="." unique_id=1144956442]
 
-[node name="Spike_0" parent="Spikes" unique_id=178922222]
-position = Vector2(540, 1300)
+[node name="Spike_0" parent="Spikes" unique_id=2002153164 instance=ExtResource("5_i7v8c")]
+position = Vector2(529, 951)
 
-[node name="Spike_1" parent="Spikes" unique_id=1364424508]
-position = Vector2(300, 1350)
+[node name="Spike_1" parent="Spikes" unique_id=857135398 instance=ExtResource("5_i7v8c")]
+position = Vector2(489, 951)
 
-[node name="Spike_2" parent="Spikes" unique_id=1078210615]
-position = Vector2(780, 1350)
-
-[node name="BlockSpike" parent="." unique_id=478030347 instance=ExtResource("6_3qp52")]
-position = Vector2(493, 941)
-
-[node name="BlockSpike2" parent="." unique_id=1616855464 instance=ExtResource("6_3qp52")]
-position = Vector2(532, 941)
-
-[node name="BlockSpike" parent="BlockSpike2" unique_id=631933781 instance=ExtResource("6_3qp52")]
-position = Vector2(40, 0)
+[node name="Spike_2" parent="Spikes" unique_id=523957575 instance=ExtResource("5_i7v8c")]
+position = Vector2(569, 951)
