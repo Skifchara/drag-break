@@ -1,18 +1,19 @@
 [gd_scene format=3 uid="uid://cy2bhiqggvw2w"]
 
-[ext_resource type="Script" uid="uid://bgmhl18mkfu2x" path="res://scr/item_scr/block_basic.gd" id="1_83318"]
-[ext_resource type="Texture2D" uid="uid://do86lagk6vy03" path="res://sprites/block_spike.png" id="2_83318"]
+[ext_resource type="Script" uid="uid://b5d30ku2vfqkf" path="res://scr/item_scr/block_spike.gd" id="1_gt7p8"]
+[ext_resource type="Texture2D" uid="uid://do86lagk6vy03" path="res://sprites/block_spike.png" id="2_jb7jv"]
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_g6cii"]
-points = PackedVector2Array(0, -11, -18, 20, 17, 20)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_si16g"]
+size = Vector2(12, 20)
 
-[node name="BlockSpike" type="StaticBody2D" unique_id=945906215]
-script = ExtResource("1_83318")
+[node name="BlockSpike" type="Area2D" unique_id=478030347]
+collision_mask = 1
+script = ExtResource("1_gt7p8")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2072827180]
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("2_83318")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1700081464]
+scale = Vector2(0.019638244, 0.019638244)
+texture = ExtResource("2_jb7jv")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=833822935]
-scale = Vector2(0.99999994, 0.99999994)
-shape = SubResource("ConvexPolygonShape2D_g6cii")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=191693897]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_si16g")

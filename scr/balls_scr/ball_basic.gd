@@ -3,7 +3,7 @@ extends RigidBody2D
 enum State { IDLE, AIMING, FLYING, SLOWMO }
 
 # ═══════════════════════════════════════════════
-#  LAUNCH SETTINGS — всё в инспекторе
+#  LAUNCH SETTINGS
 # ═══════════════════════════════════════════════
 
 @export_group("Launch Settings")
@@ -23,25 +23,16 @@ enum State { IDLE, AIMING, FLYING, SLOWMO }
 @export var slow_mo_cooldown: float = 1.5
 
 @export_group("Trajectory Preview")
-## Цвет начала предпоказа (максимальная альфа)
 @export var preview_color_start: Color = Color(0.3, 0.8, 1.0, 0.8)
-## Цвет конца предпоказа (альфа = 0 при fade)
 @export var preview_color_end: Color = Color(0.3, 0.8, 1.0, 0.0)
-## Цвет текущей траектории в slow-mo (фоновая)
 @export var preview_current_color: Color = Color(1, 1, 1, 0.12)
-## Толщина линии предпоказа
 @export var preview_line_width: float = 4.0
-## Радиус точек на траектории
 @export var preview_dot_radius: float = 3.5
-## Макс. шагов симуляции (качество кривой)
 @export var preview_max_steps: int = 60
-## Шаг времени на один шаг симуляции (сек)
 @export var preview_step_dt: float = 0.025
-## Лимит времени симуляции (сек) — насколько вперёд показывать
 @export var preview_time_limit: float = 1.8
 
 @export_group("Physics")
-## gravity_scale во время полёта
 @export var flight_gravity: float = 0.5
 
 @export_group("Reset Bounds")
@@ -51,17 +42,18 @@ enum State { IDLE, AIMING, FLYING, SLOWMO }
 @export var reset_right: float = 1280.0
 
 @export_group("Proximity")
-## Радиус, в котором клик считается "по мячу" для запуска
 @export var grab_radius: float = 200.0
 
+@export_group("Lives")
+@export var lives_per_death: int = 1
+@export var score_per_block: int = 10
+
 @export_group("Ball Scale & Physics")
-## Масштаб шарика (визуал + коллизия + кольцо)
 @export var ball_scale: float = 1.0:
 	set(v):
 		ball_scale = v
 		if is_inside_tree():
 			_apply_ball_scale()
-## Прыгучесть шарика (bounce)
 @export var ball_bounce: float = 0.8:
 	set(v):
 		ball_bounce = v
@@ -69,9 +61,7 @@ enum State { IDLE, AIMING, FLYING, SLOWMO }
 			_apply_bounce()
 
 @export_group("Ring Indicator")
-## Минимальный масштаб кольца при сильном натяжении
 @export var ring_min_scale: float = 0.3
-## Чувствительность сжатия кольца к дистанции драга
 @export var ring_compress_speed: float = 2.0
 
 # ═══════════════════════════════════════════════
@@ -84,8 +74,8 @@ var _drag_current: Vector2 = Vector2.ZERO
 var _dragging: bool = false
 var _initial_pos: Vector2 = Vector2.ZERO
 var _slow_mo_cooldown_timer: float = 0.0
-var _trajectory: PackedVector2Array = []       # коррекция / запуск
-var _current_traj: PackedVector2Array = []     # текущая траектория (slow-mo фон)
+var _trajectory: PackedVector2Array = []
+var _current_traj: PackedVector2Array = []
 var _gravity_2d: float = 980.0
 
 # ── Ring Indicator ──────────────────────────────
@@ -97,6 +87,8 @@ var _ring_wobble_started: bool = false
 var _virtual_drag: bool = false
 var _base_collision_radius: float = 48.0
 var _base_ring_radius: float = 56.0
+var _dead_flag: bool = false
+var _invuln_timer: float = 0.0
 
 # ── Scale helpers ────────────────────────────────
 @onready var _ball_sprite: Sprite2D = $Sprite2D
@@ -124,7 +116,7 @@ func _input(event: InputEvent):
 			_handle_slowmo_input(event)
 
 
-# ── IDLE / AIMING: slingshot + кривая предпоказа ─
+# ── IDLE / AIMING: slingshot ────────────────────
 
 func _handle_idle_aim_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -145,7 +137,7 @@ func _handle_idle_aim_input(event: InputEvent):
 		queue_redraw()
 
 
-# ── FLYING: ЛКМ (в любом месте) → slow-mo ──────
+# ── FLYING: ЛКМ → slow-mo ──────────────────────
 
 func _handle_flying_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -155,9 +147,9 @@ func _handle_flying_input(event: InputEvent):
 			_state = State.SLOWMO
 			Engine.time_scale = slow_mo_scale
 			if _virtual_drag:
-				_drag_start = mouse_pos           # виртуальная точка привязки
+				_drag_start = mouse_pos
 			else:
-				_drag_start = global_position      # захват за мяч
+				_drag_start = global_position
 			_drag_current = mouse_pos
 			_dragging = true
 			_ring_wobble_started = false
@@ -170,7 +162,7 @@ func _handle_flying_input(event: InputEvent):
 			_ring_deny()
 
 
-# ── SLOWMO: drag & pull slingshot + отпускание → коррекция + выход ─
+# ── SLOWMO: drag & pull ─────────────────────────
 
 func _handle_slowmo_input(event: InputEvent):
 	if event is InputEventMouseMotion and _dragging:
@@ -200,16 +192,12 @@ func _gravity() -> float:
 # ── Ball scale & bounce ─────────────────────────
 
 func _apply_ball_scale():
-	# Масштаб спрайта
 	if _ball_sprite:
 		_ball_sprite.scale = Vector2(0.05 * ball_scale, 0.05 * ball_scale)
-	# Масштаб коллизии
 	if _ball_collision and _ball_collision.shape is CircleShape2D:
 		_ball_collision.shape.radius = _base_collision_radius * ball_scale
-	# Масштаб кольца
 	if _ring_indicator:
 		_ring_indicator.call("set_radius", _base_ring_radius * ball_scale)
-	# Масштаб контейнера кольца сбрасываем (анимации работают относительно него)
 	if _ring_container:
 		_ring_container.scale = Vector2(1, 1)
 
@@ -269,7 +257,6 @@ func _ring_hide():
 
 
 func _ring_deny():
-	"""Красная вспышка + спазм кольца при попытке коррекции во время кулдауна"""
 	if not _ring_anim or not _ring_container:
 		return
 	if not _ring_container.visible:
@@ -280,7 +267,6 @@ func _ring_deny():
 
 
 func _ring_ready():
-	"""Быстрый зелёный пульс — кулдаун кончился"""
 	if not _ring_anim or not _ring_container:
 		return
 	if not _ring_container.visible:
@@ -291,7 +277,7 @@ func _ring_ready():
 
 
 func _update_trajectory():
-	var dir: Vector2 = (_drag_start - _drag_current)   # slingshot: противоположное направление
+	var dir: Vector2 = (_drag_start - _drag_current)
 	if dir.length_squared() < 1.0:
 		_trajectory.clear()
 		return
@@ -327,7 +313,7 @@ func _simulate(start_pos: Vector2, start_vel: Vector2) -> PackedVector2Array:
 	return out
 
 
-# ── Коррекция (drag & pull slingshot) ───────────
+# ── Коррекция ───────────────────────────────────
 
 func _apply_correction():
 	var dir: Vector2 = (_drag_start - _drag_current)
@@ -348,7 +334,7 @@ func _exit_slow_mo():
 	queue_redraw()
 
 
-# ── Запуск (drag & pull slingshot) ──────────────
+# ── Запуск ──────────────────────────────────────
 
 func _launch():
 	var dir: Vector2 = (_drag_start - _drag_current)
@@ -395,17 +381,14 @@ func _is_near_ball(pos: Vector2) -> bool:
 	return global_position.distance_to(pos) < grab_radius
 
 
-# ── Отрисовка кривой траектории ─────────────────
+# ── Отрисовка ───────────────────────────────────
 
 func _draw():
-	# Компенсируем вращение RigidBody2D — траектория всегда прямо
 	draw_set_transform(Vector2.ZERO, -rotation, Vector2.ONE)
 
-	# Фоновая текущая траектория (только в SLOWMO)
 	if _current_traj.size() >= 2:
 		_draw_trajectory(_current_traj, preview_current_color, preview_current_color)
 
-	# Основная траектория (запуск или коррекция) с градиентом
 	if _trajectory.size() >= 2:
 		for i in range(_trajectory.size() - 1):
 			var t: float = float(i) / float(_trajectory.size() - 1)
@@ -433,9 +416,27 @@ func _on_body_entered(body: Node):
 		var block = body as StaticBody2D
 		if block and block.has_method("hit"):
 			block.hit()
+			GameManager.add_score(score_per_block)
+
+
+func _on_hit_spike(damage: int = 1):
+	if _dead_flag or _invuln_timer > 0.0:
+		return
+	_dead_flag = true
+	_invuln_timer = 0.5
+	print("[BALL] _on_hit_spike called, damage=", damage)
+	GameManager.take_damage(damage)
+	call_deferred("_reset_to_idle")
 
 
 func _physics_process(delta: float):
+	# Тикаем таймеры всегда, даже в IDLE
+	if _invuln_timer > 0.0:
+		_invuln_timer -= delta * Engine.time_scale
+		if _invuln_timer <= 0.0:
+			_invuln_timer = 0.0
+			_dead_flag = false
+
 	var was_on_cooldown: bool = _slow_mo_cooldown_timer > 0.0
 	if _slow_mo_cooldown_timer > 0.0:
 		_slow_mo_cooldown_timer -= delta * Engine.time_scale

@@ -179,7 +179,11 @@ gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 4
 script = ExtResource("1_ssci1")
-ball_scale = 0.8
+preview_line_width = 0.0
+preview_dot_radius = 14.0
+preview_max_steps = 7
+grab_radius = 44.41
+ball_scale = 0.6
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2058388274]
 scale = Vector2(0.05, 0.05)
