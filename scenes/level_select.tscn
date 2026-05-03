@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://bc8wlv31j4wgi"]
+
+[ext_resource type="Script" uid="uid://bb0ubdk6x5dm" path="res://scr/menu/level_select.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://0c2t4najsxps" path="res://Basic_GUI_Bundle/ButtonsIcons/IconButton_Small_Background_Rounded.png" id="2_back_bg"]
+
+[node name="LevelSelect" type="Control" unique_id=563072992]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=14854449]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.06, 0.12, 1)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=226711845]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 30.0
+offset_bottom = 90.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+text = "ВЫБОР УРОВНЯ"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1341399554]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 100.0
+offset_bottom = 1758.0
+grow_horizontal = 2
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer" unique_id=1175265789]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 4
+
+[node name="Pagination" type="HBoxContainer" parent="." unique_id=602556192]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -55.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="BackButton" type="Button" parent="." unique_id=1568719078]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 30.0
+offset_right = 90.0
+offset_bottom = 90.0
+icon = ExtResource("2_back_bg")
+flat = true
+icon_alignment = 1
+expand_icon = true

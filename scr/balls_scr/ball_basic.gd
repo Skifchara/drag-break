@@ -142,7 +142,6 @@ func _handle_flying_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed and _slow_mo_cooldown_timer <= 0.0 and GameManager.corrections_remaining > 0:
 			var mouse_pos := get_global_mouse_position()
-			GameManager.use_correction()
 			_virtual_drag = not _is_near_ball(mouse_pos)
 			_state = State.SLOWMO
 			Engine.time_scale = slow_mo_scale
@@ -180,7 +179,7 @@ func _handle_slowmo_input(event: InputEvent):
 				_dragging = false
 				_apply_correction()
 				_ring_release()
-			_exit_slow_mo()
+				_exit_slow_mo()
 
 
 # ── Симуляция траектории ────────────────────────
@@ -318,11 +317,14 @@ func _simulate(start_pos: Vector2, start_vel: Vector2) -> PackedVector2Array:
 func _apply_correction():
 	var dir: Vector2 = (_drag_start - _drag_current)
 	if dir.length_squared() < 5.0:
+		# Слишком малый дёрг — откатываем коррекцию
+		GameManager.refund_correction()
 		return
 	dir = dir.normalized()
 	var dist: float = clampf(_drag_start.distance_to(_drag_current), 0.0, max_drag_distance)
 	var force_ratio: float = maxf(dist / max_drag_distance, min_launch_force_ratio)
 	linear_velocity = dir * (force_ratio * correction_power)
+	GameManager.use_correction()
 
 
 func _exit_slow_mo():
@@ -409,7 +411,6 @@ func _draw_trajectory(traj: PackedVector2Array, c_start: Color, c_end: Color):
 		var p2: Vector2 = traj[i + 1] - global_position
 		draw_line(p1, p2, c, preview_line_width * 0.5, true)
 
-
 # ── Столкновения ────────────────────────────────
 
 func _on_body_entered(body: Node):
@@ -424,7 +425,6 @@ func _on_hit_spike(damage: int = 1):
 		return
 	_dead_flag = true
 	_invuln_timer = 0.5
-	print("[BALL] _on_hit_spike called, damage=", damage)
 	GameManager.take_damage(damage)
 	call_deferred("_reset_to_idle")
 
@@ -448,6 +448,10 @@ func _physics_process(delta: float):
 	if _state == State.IDLE or _state == State.AIMING:
 		return
 
+	# Выход за границы — списываем жизнь
 	if global_position.y > reset_bottom or global_position.y < reset_top \
 		or global_position.x < reset_left or global_position.x > reset_right:
+		if not _dead_flag:
+			_dead_flag = true
+			GameManager.take_damage(lives_per_death)
 		_reset_to_idle()

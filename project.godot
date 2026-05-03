@@ -11,13 +11,16 @@ config_version=5
 [application]
 
 config/name="Drag_break"
-run/main_scene="uid://bu58ubqmjr8v2"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*res://scr/game_manager.gd"
+SaveManager="*res://scr/save_manager.gd"
+TransitionManager="*res://scr/transition_manager.gd"
+AppTheme="*res://scr/app_theme.gd"
 
 [display]
 

@@ -1,0 +1,71 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scr/menu/pause_screen.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Basic_GUI_Bundle/BoxesBanners/Banner_Blue.png" id="2_banner"]
+[ext_resource type="Texture2D" path="res://Basic_GUI_Bundle/ButtonsText/PremadeButtons_Resume.png" id="3_resume"]
+[ext_resource type="Texture2D" path="res://Basic_GUI_Bundle/ButtonsText/PremadeButtons_Replay.png" id="4_replay"]
+[ext_resource type="Texture2D" path="res://Basic_GUI_Bundle/ButtonsText/PremadeButtons_Select.png" id="5_select"]
+
+[node name="PauseScreen" type="CanvasLayer"]
+layer = 10
+process_mode = 3
+visible = false
+script = ExtResource("1_script")
+
+[node name="Overlay" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="Overlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="PanelCenter" type="CenterContainer" parent="Overlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Overlay/PanelCenter"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="Overlay/PanelCenter/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "ПАУЗА"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Overlay/PanelCenter/VBoxContainer"]
+custom_minimum_size = Vector2(280, 70)
+layout_mode = 2
+flat = true
+icon = ExtResource("3_resume")
+icon_alignment = 1
+expand_icon = true
+
+[node name="RetryButton" type="Button" parent="Overlay/PanelCenter/VBoxContainer"]
+custom_minimum_size = Vector2(280, 70)
+layout_mode = 2
+flat = true
+icon = ExtResource("4_replay")
+icon_alignment = 1
+expand_icon = true
+
+[node name="SelectButton" type="Button" parent="Overlay/PanelCenter/VBoxContainer"]
+custom_minimum_size = Vector2(280, 70)
+layout_mode = 2
+flat = true
+icon = ExtResource("5_select")
+icon_alignment = 1
+expand_icon = true

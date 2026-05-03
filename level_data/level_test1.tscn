@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d06pega3ufpfi"]
 
 [ext_resource type="PackedScene" uid="uid://br7l5ufnve2wb" path="res://balls_data/ball_basic.tscn" id="1_8l5bw"]
+[ext_resource type="Script" uid="uid://wxt05ynbfhq0" path="res://scr/game_manager.gd" id="1_iayu2"]
 [ext_resource type="PackedScene" uid="uid://dn2eklr5bvqxr" path="res://item_data/shoot_start_area.tscn" id="2_3i3q6"]
 [ext_resource type="PackedScene" uid="uid://bo4i6ylu02dor" path="res://item_data/block_basic.tscn" id="3_1a2j4"]
 [ext_resource type="PackedScene" uid="uid://xav8wv34djqc" path="res://item_data/block_jumppad.tscn" id="4_en6v0"]
@@ -15,6 +16,8 @@ size = Vector2(1080, 32)
 size = Vector2(32, 1920)
 
 [node name="LevelTest1" type="Node2D" unique_id=2117070036]
+position = Vector2(-1, -13)
+script = ExtResource("1_iayu2")
 
 [node name="WallTop" type="StaticBody2D" parent="." unique_id=1482859291]
 position = Vector2(540, -16)
@@ -55,60 +58,79 @@ position = Vector2(540, 1600)
 [node name="Blocks" type="Node2D" parent="." unique_id=802203900]
 
 [node name="Block_0_0" parent="Blocks" unique_id=1445615757 instance=ExtResource("3_1a2j4")]
-position = Vector2(120, 200)
+position = Vector2(120, 480.99997)
+hit_points = 10000
 
 [node name="Block_0_1" parent="Blocks" unique_id=2113453723 instance=ExtResource("3_1a2j4")]
-position = Vector2(360, 200)
+position = Vector2(360, 480.99997)
+hit_points = 10000
 
 [node name="Block_0_2" parent="Blocks" unique_id=1936338574 instance=ExtResource("3_1a2j4")]
-position = Vector2(600, 200)
+position = Vector2(600, 480.99997)
+hit_points = 10000
 
 [node name="Block_0_3" parent="Blocks" unique_id=1454291450 instance=ExtResource("3_1a2j4")]
-position = Vector2(840, 200)
+position = Vector2(897, 438.00003)
+rotation = 0.79248804
+hit_points = 10000
 
 [node name="Block_1_0" parent="Blocks" unique_id=399911824 instance=ExtResource("3_1a2j4")]
-position = Vector2(484, 409)
-hit_points = 2
+position = Vector2(116.999985, 739.00006)
+rotation = -0.55470574
+hit_points = 10000
 
 [node name="Block_1_1" parent="Blocks" unique_id=1896189987 instance=ExtResource("3_1a2j4")]
-position = Vector2(724, 409)
-hit_points = 2
+position = Vector2(694, 674)
+hit_points = 10000
 
 [node name="Block_1_2" parent="Blocks" unique_id=381381495 instance=ExtResource("3_1a2j4")]
-position = Vector2(964, 409)
-hit_points = 2
+position = Vector2(883, 596)
+rotation = -0.78261906
+hit_points = 10000
 
 [node name="Block_2_0" parent="Blocks" unique_id=7323351 instance=ExtResource("3_1a2j4")]
-position = Vector2(83, 691)
+position = Vector2(89.00001, 877)
+rotation = 0.9768081
+hit_points = 10000
 
 [node name="Block_2_1" parent="Blocks" unique_id=296242400 instance=ExtResource("3_1a2j4")]
-position = Vector2(323, 691)
+position = Vector2(257, 966)
+hit_points = 10000
 
 [node name="Block_2_2" parent="Blocks" unique_id=1877960579 instance=ExtResource("3_1a2j4")]
-position = Vector2(563, 691)
+position = Vector2(497, 966)
+hit_points = 10000
 
 [node name="Block_2_3" parent="Blocks" unique_id=1234971016 instance=ExtResource("3_1a2j4")]
-position = Vector2(803, 691)
+position = Vector2(737, 966)
+hit_points = 10000
 
 [node name="Block_3_0" parent="Blocks" unique_id=1893916065 instance=ExtResource("3_1a2j4")]
-position = Vector2(479, 988)
+position = Vector2(479, 1269)
+hit_points = 10000
 
 [node name="Block_3_1" parent="Blocks" unique_id=368647697 instance=ExtResource("3_1a2j4")]
-position = Vector2(719, 988)
+position = Vector2(719, 1269)
+hit_points = 10000
 
 [node name="Block_3_2" parent="Blocks" unique_id=66418339 instance=ExtResource("3_1a2j4")]
-position = Vector2(959, 988)
+position = Vector2(959, 1269)
+hit_points = 10000
 
 [node name="Blockjumppad" parent="." unique_id=519187942 instance=ExtResource("4_en6v0")]
-position = Vector2(415.00003, 960.00006)
+position = Vector2(1000, 1238)
 
 [node name="Spikes" type="Node2D" parent="." unique_id=1144956442]
 
 [node name="Spike_0" parent="Spikes" unique_id=2002153164 instance=ExtResource("5_i7v8c")]
-position = Vector2(529, 951)
+position = Vector2(725, 1218)
 
 [node name="Spike_1" parent="Spikes" unique_id=857135398 instance=ExtResource("5_i7v8c")]
-position = Vector2(489, 951)
+position = Vector2(662, 1218)
 
 [node name="Spike_2" parent="Spikes" unique_id=523957575 instance=ExtResource("5_i7v8c")]
-position = Vector2(569, 951)
+position = Vector2(788, 1218)
+
+[node name="Blockjumppad2" parent="." unique_id=1852647762 instance=ExtResource("4_en6v0")]
+position = Vector2(1057.0001, 796)
+rotation = -1.5707964

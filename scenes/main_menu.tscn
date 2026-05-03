@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scr/menu/main_menu.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Basic_GUI_Bundle/ButtonsText/ButtonText_Large_Blue_Square.png" id="2_play_bg"]
+[ext_resource type="Texture2D" path="res://Basic_GUI_Bundle/BoxesBanners/Banner_Blue.png" id="3_banner"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.06, 0.12, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+theme_override_constants/separation = 40
+
+[node name="SpacerTop" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 120)
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "DRAG BREAK"
+horizontal_alignment = 1
+
+[node name="SpacerMid" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+flat = true
+icon = ExtResource("2_play_bg")
+icon_alignment = 1
+expand_icon = true
+text = "ИГРАТЬ"
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="SpacerBot" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3

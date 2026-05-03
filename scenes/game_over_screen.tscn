@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://ctmjs7dqth50b"]
+
+[ext_resource type="Script" uid="uid://dcfwqv58boip2" path="res://scr/menu/game_over_screen.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dge7nyyrqx8xi" path="res://Basic_GUI_Bundle/ButtonsText/PremadeButtons_Replay.png" id="3_replay"]
+[ext_resource type="Texture2D" uid="uid://c3fwh5f2ng5dy" path="res://Basic_GUI_Bundle/ButtonsText/PremadeButtons_Select.png" id="4_select"]
+
+[node name="GameOverScreen" type="CanvasLayer" unique_id=86986738]
+process_mode = 3
+layer = 10
+script = ExtResource("1_script")
+
+[node name="Overlay" type="Control" parent="." unique_id=1114046436]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="Overlay" unique_id=1511824842]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="PanelCenter" type="CenterContainer" parent="Overlay" unique_id=101549023]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Overlay/PanelCenter" unique_id=519738517]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="Overlay/PanelCenter/VBoxContainer" unique_id=802307120]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "ПОРАЖЕНИЕ"
+horizontal_alignment = 1
+
+[node name="RetryButton" type="Button" parent="Overlay/PanelCenter/VBoxContainer" unique_id=1763250864]
+custom_minimum_size = Vector2(280, 70)
+layout_mode = 2
+icon = ExtResource("3_replay")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="SelectButton" type="Button" parent="Overlay/PanelCenter/VBoxContainer" unique_id=138287878]
+custom_minimum_size = Vector2(280, 70)
+layout_mode = 2
+icon = ExtResource("4_select")
+flat = true
+icon_alignment = 1
+expand_icon = true

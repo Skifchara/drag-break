@@ -7,10 +7,12 @@ var max_corrections: int = 3
 
 var lives: int = 3
 var corrections_remaining: int = 3
+var current_level: int = 1
 
 signal lives_changed(new_lives: int)
 signal corrections_changed(remaining: int)
 signal game_over()
+signal level_won()
 
 
 func _ready():
@@ -44,6 +46,11 @@ func use_correction() -> bool:
 	return true
 
 
+func refund_correction():
+	corrections_remaining = mini(corrections_remaining + 1, max_corrections)
+	corrections_changed.emit(corrections_remaining)
+
+
 func refill_corrections():
 	corrections_remaining = max_corrections
 	corrections_changed.emit(corrections_remaining)
@@ -53,3 +60,10 @@ func configure(new_lives: int, new_corrections: int):
 	max_lives = new_lives
 	max_corrections = new_corrections
 	reset()
+
+
+func complete_level():
+	# Звёзды: на основе оставшихся жизней (1 звезда = 1 жизнь, макс 3)
+	var stars: int = clampi(lives, 1, 3)
+	SaveManager.complete_level(current_level, stars)
+	level_won.emit()
